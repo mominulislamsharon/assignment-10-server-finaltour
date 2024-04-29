@@ -32,8 +32,20 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    // addcraftitme 
     const database = client.db('craftItemDB');
     const itemCollection = database.collection('item');
+    // addmylistitem
+    const databased = client.db('myListItems');
+    const myCraftListCollection = databased.collection('myArtList');
+
+    app.get('/addItem', async(req, res) => {
+      const cursor = itemCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+  
+
 
     app.post('/addItem', async(req, res) => {
       const newItem = req.body;
@@ -41,6 +53,20 @@ async function run() {
       const result = await itemCollection.insertOne(newItem);
       res.send(result);
     })
+
+    app.get('/myListItem', async(req, res) => {
+      const cursor = myCraftListCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+    app.post('/myListItem', async(req, res) => {
+      const newMyList = req.body;
+      console.log(newMyList);
+      const result = await myCraftListCollection.insertOne(newMyList);
+      res.send(result);
+    })
+
 
 
 
