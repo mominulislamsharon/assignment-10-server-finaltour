@@ -18,6 +18,7 @@ app.use(express.json());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.a1brhlt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 
+
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -35,9 +36,7 @@ async function run() {
     // addcraftitme 
     const database = client.db('craftItemDB');
     const itemCollection = database.collection('item');
-    // addmylistitem
-    const databased = client.db('myListItems');
-    const myCraftListCollection = databased.collection('myArtList');
+    
 
     app.get('/addItem', async(req, res) => {
       const cursor = itemCollection.find();
@@ -54,18 +53,12 @@ async function run() {
       res.send(result);
     })
 
-    app.get('/myListItem', async(req, res) => {
-      const cursor = myCraftListCollection.find();
-      const result = await cursor.toArray();
+    app.get('/myArtList/:email', async(req, res) => {
+      console.log(req.params.email);
+      const result = await itemCollection.find({email:req.params.email}).toArray();
       res.send(result);
     })
 
-    app.post('/myListItem', async(req, res) => {
-      const newMyList = req.body;
-      console.log(newMyList);
-      const result = await myCraftListCollection.insertOne(newMyList);
-      res.send(result);
-    })
 
 
 
