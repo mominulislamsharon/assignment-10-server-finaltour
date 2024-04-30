@@ -48,21 +48,21 @@ async function run() {
 
     app.post('/addItem', async(req, res) => {
       const newItem = req.body;
-      console.log(newItem);
+      // console.log(newItem);
       const result = await itemCollection.insertOne(newItem);
       res.send(result);
     })
 
     app.get('/myArtList/:email', async(req, res) => {
-      console.log(req.params.email);
+      // console.log(req.params.email);
       const result = await itemCollection.find({email:req.params.email}).toArray();
       res.send(result);
     })
 
     app.get('/updateProduct/:id', async(req, res) =>{
-      console.log(req.params.id)
+      // console.log(req.params.id)
       const result = await itemCollection.findOne({_id: new ObjectId(req.params.id)})
-      console.log(result);
+      // console.log(result);
       res.send(result)
     })
 
@@ -71,6 +71,7 @@ async function run() {
       const filter = {_id: new ObjectId(id)}
       const options = {upsert: true};
       const upadeteItem = req.body;
+      console.log(id,upadeteItem);
       const updatedsItem = {
         $set: {
           name: upadeteItem.name,
@@ -81,7 +82,7 @@ async function run() {
           category: upadeteItem.category,
           customization: upadeteItem.customization,
           stock: upadeteItem.stock,
-          email: upadeteItem.email,
+          // email: upadeteItem.email,
           message: upadeteItem.message,
         }
       }
@@ -92,7 +93,7 @@ async function run() {
     app.delete('/delete/:id', async(req,res) => {
       const result = await itemCollection.deleteOne(
         {_id: new ObjectId(req.params.id)})
-        console.log(result);
+        // console.log(result);
         res.send(result);
     })
 
