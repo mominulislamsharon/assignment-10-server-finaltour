@@ -8,7 +8,10 @@ const port = process.env.PORT || 5000;
 
 
 // middleware 
-app.use(cors());
+app.use(cors({origin: ["http://localhost:5173/"], methods: ['GET', 'POST', 'PUT', 'DELETE'], Credential: true}));
+
+
+
 app.use(express.json());
 
  
@@ -70,23 +73,23 @@ async function run() {
       const id = req.params.id;
       const filter = {_id: new ObjectId(id)}
       const options = {upsert: true};
-      const upadeteItem = req.body;
-      console.log(id,upadeteItem);
-      const updatedsItem = {
+      const updateItem  = req.body;
+      console.log(id,updateItem);
+      const updatedItem = {
         $set: {
-          name: upadeteItem.name,
-          price: upadeteItem.price,
-          rating: upadeteItem.rating,
-          time: upadeteItem.time,
-          item: upadeteItem.item,
-          category: upadeteItem.category,
-          customization: upadeteItem.customization,
-          stock: upadeteItem.stock,
-          // email: upadeteItem.email,
-          message: upadeteItem.message,
+          name: updateItem.name,
+          price: updateItem.price,
+          rating: updateItem.rating,
+          time: updateItem.time,
+          item: updateItem.item,
+          category: updateItem.category,
+          customization: updateItem.customization,
+          stock: updateItem.stock, 
+          message: updateItem.message, 
         }
-      }
-      const result = await itemCollection.updateOne(filter, updatedsItem, options);
+      };
+
+      const result = await itemCollection.updateOne(filter, updatedItem, options);
       res.send(result)
     })
 
@@ -101,8 +104,8 @@ async function run() {
 
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
